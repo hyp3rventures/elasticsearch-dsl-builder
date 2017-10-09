@@ -1,0 +1,198 @@
+# Rubocop comes with most cops enabled and some disabled by default.
+# Our style guide does not match these defaults and sometimes the cops have too
+# many false positives, so we explicitly enable/disable some cops below.
+
+AbcSize:
+  Enabled: false
+
+AccessorMethodName:
+  Enabled: true
+
+Alias:
+  Enabled: false
+
+AlignArray:
+  Enabled: true
+  Exclude:
+    - config/application.rb
+
+AlignHash:
+  Enabled: false
+
+AlignParameters:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.3
+  DisplayCopNames: true
+  Exclude:
+    - db/schema.rb
+    - vendor/**/*
+    - deploy/after_restart.rb
+    - bin/*
+    - lib/tasks/circle*
+
+AmbiguousOperator:
+  Enabled: false
+
+AmbiguousRegexpLiteral:
+  Enabled: false
+
+AssignmentInCondition:
+  Enabled: false
+
+CaseIndentation:
+  EnforcedStyle: end
+
+ClassAndModuleChildren:
+  Enabled: false
+
+ClassLength:
+  Enabled: false
+
+CollectionMethods:
+  Enabled: false
+
+CyclomaticComplexity:
+  Enabled: false
+
+Date:
+  Exclude:
+    - app/workers/export_worker.rb
+  EnforcedStyle: flexible
+
+Delegate:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+DotPosition:
+  EnforcedStyle: trailing
+
+DoubleNegation:
+  Enabled: false
+
+EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true
+
+EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+FirstParameterIndentation:
+  Enabled: false
+
+FormatString:
+  EnforcedStyle: percent
+
+GuardClause:
+  Enabled: false
+
+HandleExceptions:
+  Enabled: false
+
+HasAndBelongsToMany:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+IndentHash:
+  Enabled: true
+
+IndentationWidth:
+  Enabled: false
+
+Lambda:
+  Enabled: false
+
+LineLength:
+  Max: 150
+
+Loop:
+  Enabled: true
+
+MethodCalledOnDoEndBlock:
+  Enabled: false
+
+MethodLength:
+  Max: 25
+  Enabled: false
+
+ModuleLength:
+  Enabled: false
+
+MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+MultilineOperationIndentation:
+  Enabled: false
+
+MutableConstant:
+  Enabled: false
+
+Next:
+  Enabled: false
+
+NumericLiterals:
+  Enabled: false
+
+ParallelAssignment:
+  Enabled: true
+
+ParameterLists:
+  Enabled: false
+
+ParenthesesAsGroupedExpression:
+  Enabled: false
+
+PerceivedComplexity:
+  Enabled: false
+
+Performance/Casecmp:
+  Enabled: false
+
+PredicateName:
+  Enabled: false
+
+Rails:
+  Enabled: false
+
+RescueModifier:
+  Enabled: false
+
+SignalException:
+  Enabled: false
+
+StructInheritance:
+  Enabled: false
+
+SymbolProc:
+  IgnoredMethods:
+    - expose
+    - respond_to
+    - define_method
+
+TimeZone:
+  EnforcedStyle: flexible
+
+UnusedBlockArgument:
+  Enabled: false
+
+UnusedMethodArgument:
+  Enabled: true
+
+UselessAssignment:
+  Enabled: false
+
+Validation:
+  Enabled: true
+
+WhileUntilModifier:
+  Enabled: false
+
+WordArray:
+  MinSize: 3
+
+FrozenStringLiteralComment:
+  Enabled: false
