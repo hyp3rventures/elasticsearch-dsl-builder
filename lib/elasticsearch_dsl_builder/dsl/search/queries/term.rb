@@ -5,13 +5,14 @@ module ElasticsearchDslBuilder
         class Term < Query
           def initialize(field = nil, value = nil)
             @type = :term
-            field(field)
-            value(value)
+            field(field) unless field.nil?
+            value(value) unless value.nil?
             super()
           end
 
           def field(field)
-            raise ArgumentError, 'field must be a String' unless field.instance_of?(String)
+            field_valid = field.instance_of?(String) || field.instance_of?(Symbol)
+            raise ArgumentError, 'field must be a String or Symbol' unless field_valid
             @field = field.to_sym
             self
           end
@@ -22,8 +23,8 @@ module ElasticsearchDslBuilder
           end
 
           def to_hash
-            @query = {}
-            @query.update(@field => @value) if @field && @value
+            raise InvalidQuery, 'field and value must be provided for Term Query' unless @field && @value
+            @query = { @field => @value }
             super
           end
         end

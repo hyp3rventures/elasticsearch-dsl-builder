@@ -10,22 +10,22 @@ module ElasticsearchDslBuilder
             super()
           end
 
-          def values(values)
-            valid = values.instance_of?(Array) && !values.empty?
-            raise ArgumentError, 'values must be a non-empty Array' unless valid
+          def values(*values)
+            values = values.flatten
+            raise ArgumentError, 'values must be a non-empty Array' if values.empty? || values.any?(&:nil?)
             @values = values
             self
           end
 
           def field(field)
-            raise ArgumentError, 'field must be a String' unless field.instance_of?(String)
-            @field = field
+            field_valid = field.instance_of?(String) || field.instance_of?(Symbol)
+            raise ArgumentError, 'field must be a String' unless field_valid
+            @field = field.to_sym
             self
           end
 
           def to_hash
-            @query = {}
-            @query.update(@field => @values) if @field && @values
+            @query = { @field => @values }
             super
           end
         end

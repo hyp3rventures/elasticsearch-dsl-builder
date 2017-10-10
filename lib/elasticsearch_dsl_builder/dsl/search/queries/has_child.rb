@@ -24,8 +24,7 @@ module ElasticsearchDslBuilder
           end
 
           def to_hash
-            @query = {}
-            @query.update(type: @child_type) if @child_type
+            @query = { type: @child_type }
             @query.update(query: @nested_query) if @nested_query
             super
           end

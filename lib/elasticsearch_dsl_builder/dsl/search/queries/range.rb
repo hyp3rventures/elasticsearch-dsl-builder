@@ -10,8 +10,9 @@ module ElasticsearchDslBuilder
           end
 
           def field(field)
-            raise ArgumentError, 'field must be a String' unless field.instance_of?(String)
-            @field = field
+            field_valid = field.instance_of?(String) || field.instance_of?(Symbol)
+            raise ArgumentError, 'field must be a String' unless field_valid
+            @field = field.to_sym
             self
           end
 
@@ -49,8 +50,7 @@ module ElasticsearchDslBuilder
             nested_query.update(lte: @lte) if @lte
             nested_query.update(format: @format) if @format
 
-            @query = {}
-            @query.update(@field => nested_query) unless nested_query.nil? || nested_query.empty?
+            @query = { @field => nested_query }
             super
           end
         end

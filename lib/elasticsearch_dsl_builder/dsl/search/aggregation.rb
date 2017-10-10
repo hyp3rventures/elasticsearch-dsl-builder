@@ -13,6 +13,10 @@ module ElasticsearchDslBuilder
         class Aggregation
           # Defines an aggregation nested in another one
           def aggregation(name, aggregation)
+            name_valid = name.instance_of?(String) || name.instance_of?(Symbol)
+            raise ArgumentError, 'name must be a String or Symbol' unless name_valid
+            raise ArgumentError, 'aggregation must extend Aggregation' unless aggregation.is_a?(Aggregation)
+
             @aggregations ||= AggregationsCollection.new
             @aggregations[name.to_sym] = aggregation
             self

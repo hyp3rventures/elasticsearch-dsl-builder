@@ -23,8 +23,7 @@ module ElasticsearchDslBuilder
           end
 
           def to_hash
-            @query = {}
-            @query.update(path: @path) if @path
+            @query = { path: @path }
             @query.update(query: @nested_query) if @nested_query
             super
           end

@@ -16,8 +16,7 @@ module ElasticsearchDslBuilder
           end
 
           def to_hash
-            @query = {}
-            @query.update(field: @field) if @field
+            @query = { field: @field }
             super
           end
         end

@@ -10,9 +10,10 @@ module ElasticsearchDslBuilder
             super()
           end
 
-          def fields(fields)
-            valid = fields.instance_of?(Array) && !fields.empty? && fields.all? { |f| f.instance_of?(String) }
-            raise ArgumentError, 'fields must be a non-empty Array of Strings' unless valid
+          def fields(*fields)
+            fields = fields.flatten
+            valid = !fields.empty? && fields.all? { |f| f.instance_of?(String) }
+            raise ArgumentError, 'fields must be array of Strings' unless valid
             @fields = fields
             self
           end

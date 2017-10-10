@@ -6,12 +6,18 @@ module ElasticsearchDslBuilder
         #
         # @return [self, Query]
         def query(query)
+          raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Queries::Query)
+
           @query = query
           self
         end
 
         def aggregation(name, aggregation)
-          @aggregations ||= AggregationsCollection.new
+          name_valid = name.instance_of?(String) || name.instance_of?(Symbol)
+          raise ArgumentError, 'name must be a String or Symbol' unless name_valid
+          raise ArgumentError, 'aggregation must extend Aggregation' unless aggregation.is_a?(Aggregations::Aggregation)
+
+          @aggregations ||= Aggregations::AggregationsCollection.new
           @aggregations[name.to_sym] = aggregation
           self
         end
@@ -23,32 +29,38 @@ module ElasticsearchDslBuilder
         end
 
         def size(value)
+          raise ArgumentError, 'value must be Numeric' unless value.is_a? Numeric
           @size = value
           self
         end
 
         def from(value)
+          raise ArgumentError, 'value must be Numeric' unless value.is_a? Numeric
           @from = value
           self
         end
 
         def search_after(*values)
-          raise ArgunmentError, 'must pass at least 1 value' if values.nil? || values.empty?
+          raise ArgumentError, 'must pass at least 1 value' if values.nil? || values.empty?
           @search_after = values.flatten
           self
         end
 
         def include_fields(*fields)
-          raise ArgunmentError, 'must pass at least 1 field' if fields.nil? || fields.empty?
+          fields = fields.flatten
+          fields_valid = !fields.empty? && fields.all? { |f| f.instance_of?(String) }
+          raise ArgumentError, 'must pass at least 1 String field' unless fields_valid
           @included_fields ||= []
-          @included_fields.concat fields.flatten
+          @included_fields.concat fields
           self
         end
 
         def exclude_fields(*fields)
-          raise ArgunmentError, 'must pass at least 1 field' if fields.nil? || fields.empty?
+          fields = fields.flatten
+          fields_valid = !fields.empty? && fields.all? { |f| f.instance_of?(String) }
+          raise ArgumentError, 'must pass at least 1 String field' unless fields_valid
           @excluded_fields ||= []
-          @excluded_fields.concat fields.flatten
+          @excluded_fields.concat fields
           self
         end
 

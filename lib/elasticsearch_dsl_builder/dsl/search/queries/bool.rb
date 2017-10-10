@@ -16,6 +16,7 @@ module ElasticsearchDslBuilder
           end
 
           def minimum_should_match(value)
+            raise ArgumentError, 'minimum_should_match must be Numeric' unless value.is_a?(Numeric)
             @minimum_should_match = value
             self
           end
