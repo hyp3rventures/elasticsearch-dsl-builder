@@ -15,9 +15,15 @@ module ElasticsearchDslBuilder
             self
           end
 
+          def size(size)
+            raise ArgumentError, 'size must be Numeric' unless size.is_a?(Numeric)
+            @size = size
+            self
+          end
+
           def include(include)
             include_valid = include.instance_of?(String) ||
-              (include.instance_of?(Array) && include.all? { |i| i.instance_of?(String)})
+              (include.instance_of?(Array) && include.all? { |i| i.instance_of?(String) })
             raise ArgumentError, 'include argument must be a String or Array of Strings' unless include_valid
             @include = include
             self
@@ -25,7 +31,7 @@ module ElasticsearchDslBuilder
 
           def exclude(exclude)
             exclude_valid = exclude.instance_of?(String) ||
-              (exclude.instance_of?(Array) && exclude.all? { |i| i.instance_of?(String)})
+              (exclude.instance_of?(Array) && exclude.all? { |i| i.instance_of?(String) })
             raise ArgumentError, 'exclude argument must be a String or Array of Strings' unless exclude_valid
             @exclude = exclude
             self
@@ -33,6 +39,7 @@ module ElasticsearchDslBuilder
 
           def to_hash
             @aggregation = { field: @field }
+            @aggregation.update(size: @size) if @size
             @aggregation.update(include: @include) if @include
             @aggregation.update(exclude: @exclude) if @exclude
             super

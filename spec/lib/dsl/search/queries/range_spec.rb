@@ -17,12 +17,9 @@ describe ElasticsearchDslBuilder::DSL::Search::Queries::Range do
     range = Queries::Range.new(:field_a).
       format('YYYY-MM').gt('2017-09').gte('2017-09').lt('2017-09').lte('2017-09')
     expect(range.to_hash).to eq(
-                               range: {
-                                 field_a: {
-                                   gt: '2017-09', gte: '2017-09', lt: '2017-09', lte: '2017-09',
-                                   format: 'YYYY-MM'
-                                 }
-                               }
-                             )
+      range: {
+        field_a: { gt: '2017-09', gte: '2017-09', lt: '2017-09', lte: '2017-09', format: 'YYYY-MM' }
+      }
+    )
   end
 end

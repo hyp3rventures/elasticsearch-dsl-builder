@@ -7,6 +7,11 @@ describe ElasticsearchDslBuilder::DSL::Search::Aggregations::Terms do
     expect { Aggregations::Terms.new('field_a').field(nil) }.to raise_error(ArgumentError)
   end
 
+  it 'should fail if size not valid' do
+    expect { Aggregations::Terms.new('field_a').size('fail') }.to raise_error(ArgumentError)
+    expect { Aggregations::Terms.new('field_a').size(nil) }.to raise_error(ArgumentError)
+  end
+
   it 'should fail if include not valid' do
     expect { Aggregations::Terms.new('field_a').include(nil) }.to raise_error(ArgumentError)
     expect { Aggregations::Terms.new('field_a').include({}) }.to raise_error(ArgumentError)
@@ -21,11 +26,12 @@ describe ElasticsearchDslBuilder::DSL::Search::Aggregations::Terms do
 
   it 'should chain create valid ES aggregation hash' do
     terms = Aggregations::Terms.new('field_a').
-      include('*ball').exclude(%w(baseball racquetball)).
+      size(5).
+      include('*ball').exclude(['baseball', 'racquetball']).
       aggregation('nested_agg', Aggregations::Terms.new('field_b'))
     expect(terms.to_hash).to eq(
-                               terms: { field: 'field_a', include: '*ball', exclude: %w(baseball racquetball) },
-                               aggregations: { nested_agg: { terms: { field: 'field_b' } } }
-                             )
+      terms: { field: 'field_a', size: 5, include: '*ball', exclude: ['baseball', 'racquetball'] },
+      aggregations: { nested_agg: { terms: { field: 'field_b' } } }
+    )
   end
 end

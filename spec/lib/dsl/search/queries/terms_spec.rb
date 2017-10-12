@@ -15,6 +15,6 @@ describe ElasticsearchDslBuilder::DSL::Search::Queries::Terms do
 
   it 'should chain create valid ES query hash' do
     terms = Queries::Terms.new(:field_a, [1, 2])
-    expect(terms.to_hash).to eq({ terms: { field_a: [1, 2] } })
+    expect(terms.to_hash).to eq(terms: { field_a: [1, 2] })
   end
 end
