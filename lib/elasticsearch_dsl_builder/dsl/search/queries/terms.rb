@@ -19,7 +19,7 @@ module ElasticsearchDslBuilder
 
           def field(field)
             field_valid = field.instance_of?(String) || field.instance_of?(Symbol)
-            raise ArgumentError, 'field must be a String' unless field_valid
+            raise ArgumentError, 'field must be a String or Symbol' unless field_valid
             @field = field.to_sym
             self
           end

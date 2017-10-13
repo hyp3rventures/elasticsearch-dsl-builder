@@ -3,7 +3,7 @@ module ElasticsearchDslBuilder
     module Search
       module Queries
         class Exists < Query
-          def initialize(field = nil)
+          def initialize(field)
             @type = :exists
             field(field)
             super()

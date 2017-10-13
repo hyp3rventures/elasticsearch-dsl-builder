@@ -53,7 +53,7 @@ describe ElasticsearchDslBuilder::DSL::Search::Search do
       search_after(2, 1).
       include_fields('id', 'content').
       exclude_fields('no_show').
-      aggregation('my_agg', Aggregations::Terms.new('field_a'))
+      aggregation('my_agg', Aggregations::Terms.new.field('field_a'))
 
     expect(search.to_hash).to eq(
       query: { bool: {} },

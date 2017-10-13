@@ -3,15 +3,20 @@ module ElasticsearchDslBuilder
     module Search
       module Aggregations
         class Terms < Aggregation
-          def initialize(field = nil)
+          def initialize
             @type = :terms
-            field(field)
             super()
           end
 
           def field(field)
             raise ArgumentError, 'field must be a String' unless field.instance_of?(String)
             @field = field
+            self
+          end
+
+          def script(script)
+            raise ArgumentError, 'script must be a Script' unless script.instance_of?(Script)
+            @script = script.to_hash
             self
           end
 
@@ -39,6 +44,7 @@ module ElasticsearchDslBuilder
 
           def to_hash
             @aggregation = { field: @field }
+            @aggregation.update(script: @script) if @script
             @aggregation.update(size: @size) if @size
             @aggregation.update(include: @include) if @include
             @aggregation.update(exclude: @exclude) if @exclude

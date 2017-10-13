@@ -2,11 +2,11 @@ require 'elasticsearch_dsl_builder/dsl/version'
 
 require 'elasticsearch_dsl_builder/dsl/search/aggregation'
 require 'elasticsearch_dsl_builder/dsl/search/query'
+require 'elasticsearch_dsl_builder/dsl/search/script'
 require 'elasticsearch_dsl_builder/dsl/search/sort'
 require 'elasticsearch_dsl_builder/exceptions'
 
 Dir[File.expand_path('../dsl/search/queries/**/*.rb', __FILE__)].each        { |f| require f }
-Dir[File.expand_path('../dsl/search/filters/**/*.rb', __FILE__)].each        { |f| require f }
 Dir[File.expand_path('../dsl/search/aggregations/**/*.rb', __FILE__)].each   { |f| require f }
 
 require 'elasticsearch_dsl_builder/dsl/search'
