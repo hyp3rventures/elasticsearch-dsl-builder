@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'elasticsearch-dsl-builder'
-  s.version     = '0.0.14'
+  s.version     = '0.0.15'
   s.date        = '2017-10-06'
   s.summary     = 'Library utilizing builder pattern providing Ruby API for the Elasticsearch Query DSL'
   s.description = 'TBD'
