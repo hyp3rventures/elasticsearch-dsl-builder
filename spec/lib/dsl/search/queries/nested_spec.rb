@@ -12,8 +12,30 @@ describe ElasticsearchDslBuilder::DSL::Search::Queries::Nested do
     expect { Queries::Nested.new('path').query({}) }.to raise_error(ArgumentError)
   end
 
+  it 'should fail if inner_hits argument not a InnerHits' do
+    expect { Queries::Nested.new('path').inner_hits('invalid') }.to raise_error(ArgumentError)
+    expect { Queries::Nested.new('path').inner_hits({}) }.to raise_error(ArgumentError)
+  end
+
   it 'should chain create valid ES query hash' do
-    match = Queries::Nested.new('path').query(Queries::Exists.new('field_a'))
-    expect(match.to_hash).to eq(nested: { path: 'path', query: { exists: { field: 'field_a' } } })
+    match = Queries::Nested.new('path').
+      query(Queries::Exists.new('field_a')).
+      inner_hits(
+        InnerHits.new.size(1).from(0).sort_by('posted_at', 'asc').
+          include_fields('id', 'content').
+          exclude_fields('no_show')
+      )
+    expect(match.to_hash).to eq(
+      nested: {
+        path: 'path', query: { exists: { field: 'field_a' } },
+        inner_hits: {
+          sort: [{ 'posted_at' => 'asc' }], size: 1, from: 0,
+          _source: {
+            includes: ['id', 'content'],
+            excludes: ['no_show']
+          }
+        }
+      }
+    )
   end
 end

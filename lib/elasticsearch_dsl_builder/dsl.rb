@@ -2,6 +2,7 @@ require 'elasticsearch_dsl_builder/dsl/version'
 
 require 'elasticsearch_dsl_builder/dsl/search/aggregation'
 require 'elasticsearch_dsl_builder/dsl/search/query'
+require 'elasticsearch_dsl_builder/dsl/search/inner_hits'
 require 'elasticsearch_dsl_builder/dsl/search/script'
 require 'elasticsearch_dsl_builder/dsl/search/sort'
 require 'elasticsearch_dsl_builder/exceptions'

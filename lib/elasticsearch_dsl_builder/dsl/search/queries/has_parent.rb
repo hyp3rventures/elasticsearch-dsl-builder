@@ -30,11 +30,18 @@ module ElasticsearchDslBuilder
             self
           end
 
+          def inner_hits(inner_hits)
+            raise ArgumentError, 'inner_hits must be an InnerHits object' unless inner_hits.instance_of?(InnerHits)
+            @inner_hits = inner_hits.to_hash
+            self
+          end
+
           def to_hash
             @query = {}
             @query.update(parent_type: @parent_type) if @parent_type
             @query.update(score: @score) if @score
             @query.update(query: @nested_query) if @nested_query
+            @query.update(inner_hits: @inner_hits) if @inner_hits
             super
           end
         end
