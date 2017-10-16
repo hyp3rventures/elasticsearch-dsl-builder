@@ -15,6 +15,13 @@ module ElasticsearchDslBuilder
           self
         end
 
+        def inline(inline)
+          raise ArgumentError, 'can be inline or file script. not both' if @file
+          raise ArgumentError, 'inline must be a String' unless inline.instance_of?(String)
+          @inline = inline
+          self
+        end
+
         def file(file)
           raise ArgumentError, 'can be inline or file script. not both' if @source
           raise ArgumentError, 'file must be a String' unless file.instance_of?(String)
@@ -32,6 +39,7 @@ module ElasticsearchDslBuilder
           script = {}
           @lang ||= 'painless'
           script.update(lang: @lang, source: @source) if @source
+          script.update(lang: @lang, inline: @inline) if @inline
           script.update(file: @file) if @file
           script.update(params: @params) if @params
           script
