@@ -21,6 +21,7 @@ module ElasticsearchDslBuilder
           end
 
           def to_hash
+            raise ArgumentError, 'must have set at least one of [field, script]' if @field.nil? && @script.nil?
             @aggregation = {}
             @aggregation.update(field: @field) if @field
             @aggregation.update(script: @script) if @script
