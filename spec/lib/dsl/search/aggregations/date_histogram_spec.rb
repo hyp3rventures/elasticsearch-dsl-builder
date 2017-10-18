@@ -19,8 +19,18 @@ describe ElasticsearchDslBuilder::DSL::Search::Aggregations::DateHistogram do
     expect { Aggregations::DateHistogram.new('field_a').format(nil) }.to raise_error(ArgumentError)
   end
 
+  it 'should fail if min_doc_count not valid' do
+    expect { Aggregations::DateHistogram.new('field_a').min_doc_count('fail') }.to raise_error(ArgumentError)
+    expect { Aggregations::DateHistogram.new('field_a').min_doc_count(nil) }.to raise_error(ArgumentError)
+  end
+
   it 'should chain create valid ES aggregation hash' do
-    date_histogram = Aggregations::DateHistogram.new('field_a', 'month').format('MM-yyy')
-    expect(date_histogram.to_hash).to eq(date_histogram: { field: 'field_a', interval: 'month', format: 'MM-yyy' })
+    date_histogram = Aggregations::DateHistogram.new('field_a', 'month').
+      format('MM-yyy').extended_bounds_min(10).extended_bounds_max(15).min_doc_count(0)
+    expect(date_histogram.to_hash).to eq(
+      date_histogram: {
+        field: 'field_a', interval: 'month', format: 'MM-yyy', min_doc_count: 0, extended_bounds: { min: 10, max: 15 }
+      }
+    )
   end
 end

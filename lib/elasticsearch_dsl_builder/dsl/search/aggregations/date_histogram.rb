@@ -28,9 +28,31 @@ module ElasticsearchDslBuilder
             self
           end
 
+          def min_doc_count(min)
+            raise ArgumentError, 'min_doc_count must be Numeric' unless min.is_a?(Numeric)
+            @min_doc_count = min
+            self
+          end
+
+          def extended_bounds_min(min)
+            @extended_bounds_min = min
+            self
+          end
+
+          def extended_bounds_max(max)
+            @extended_bounds_max = max
+            self
+          end
+
           def to_hash
             @aggregation = { field: @field, interval: @interval }
             @aggregation.update(format: @format) if @format
+            @aggregation.update(min_doc_count: @min_doc_count) if @min_doc_count
+
+            extended_bounds = {}
+            extended_bounds.update(min: @extended_bounds_min) if @extended_bounds_min
+            extended_bounds.update(max: @extended_bounds_max) if @extended_bounds_max
+            @aggregation.update(extended_bounds: extended_bounds) unless extended_bounds.empty?
             super
           end
         end
