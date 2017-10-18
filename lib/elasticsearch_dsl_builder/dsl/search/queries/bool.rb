@@ -25,7 +25,7 @@ module ElasticsearchDslBuilder
             raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Query)
 
             @must ||= []
-            hashed_query = query.to_hash
+            hashed_query = query
             @must << hashed_query unless @must.include?(hashed_query)
             self
           end
@@ -34,7 +34,7 @@ module ElasticsearchDslBuilder
             raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Query)
 
             @must_not ||= []
-            hashed_query = query.to_hash
+            hashed_query = query
             @must_not << hashed_query unless @must_not.include?(hashed_query)
             self
           end
@@ -43,7 +43,7 @@ module ElasticsearchDslBuilder
             raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Query)
 
             @should ||= []
-            hashed_query = query.to_hash
+            hashed_query = query
             @should << hashed_query unless @should.include?(hashed_query)
             self
           end
@@ -52,7 +52,7 @@ module ElasticsearchDslBuilder
             raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Query)
 
             @filter ||= []
-            hashed_query = query.to_hash
+            hashed_query = query
             @filter << hashed_query unless @filter.include?(hashed_query)
             self
           end
@@ -60,10 +60,10 @@ module ElasticsearchDslBuilder
           def to_hash
             @query = {}
             @query.update(minimum_should_match: @minimum_should_match) if @minimum_should_match
-            @query.update(must: @must) if @must
-            @query.update(must_not: @must_not) if @must_not
-            @query.update(should: @should) if @should
-            @query.update(filter: @filter) if @filter
+            @query.update(must: @must.map(&:to_hash)) if @must
+            @query.update(must_not: @must_not.map(&:to_hash)) if @must_not
+            @query.update(should: @should.map(&:to_hash)) if @should
+            @query.update(filter: @filter.map(&:to_hash)) if @filter
             super
           end
         end

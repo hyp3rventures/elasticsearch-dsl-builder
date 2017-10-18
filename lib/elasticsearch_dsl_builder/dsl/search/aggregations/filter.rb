@@ -11,12 +11,12 @@ module ElasticsearchDslBuilder
 
           def filter(query)
             raise ArgumentError, 'query must be a Queries::Query' unless query.is_a?(Queries::Query)
-            @query = query.to_hash
+            @query = query
             self
           end
 
           def to_hash
-            @aggregation = @query
+            @aggregation = @query.to_hash
             super
           end
         end

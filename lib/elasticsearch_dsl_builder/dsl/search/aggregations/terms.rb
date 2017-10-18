@@ -16,7 +16,7 @@ module ElasticsearchDslBuilder
 
           def script(script)
             raise ArgumentError, 'script must be a Script' unless script.instance_of?(Script)
-            @script = script.to_hash
+            @script = script
             self
           end
 
@@ -46,7 +46,7 @@ module ElasticsearchDslBuilder
             raise ArgumentError, 'must have set at least one of [field, script]' if @field.nil? && @script.nil?
             @aggregation = {}
             @aggregation.update(field: @field) if @field
-            @aggregation.update(script: @script) if @script
+            @aggregation.update(script: @script.to_hash) if @script
             @aggregation.update(size: @size) if @size
             @aggregation.update(include: @include) if @include
             @aggregation.update(exclude: @exclude) if @exclude

@@ -10,7 +10,6 @@ module ElasticsearchDslBuilder
 
           def filter(query, name = nil)
             raise ArgumentError, 'query must extend type Queries::Query' unless query.is_a?(Queries::Query)
-            query = query.to_hash
 
             if name.nil?
               # Adding an anonymous filter
@@ -30,7 +29,9 @@ module ElasticsearchDslBuilder
 
           def to_hash
             raise ArgumentError, 'no filters were added' if @filters.nil?
-            @aggregation = { filters: @filters }
+
+            filters = @filters.instance_of?(Hash) ? @filters.map { |k, v| [k, v.to_hash] }.to_h : @filters.map(&:to_hash)
+            @aggregation = { filters: filters }
             super
           end
         end
