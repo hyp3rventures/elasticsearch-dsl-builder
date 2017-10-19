@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    elasticsearch-dsl-builder (0.0.21)
+    elasticsearch-dsl-builder (0.0.22)
 
 GEM
   remote: https://rubygems.org/
