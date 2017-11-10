@@ -38,6 +38,3 @@ jobs:
 
       # Runs Rspec
       - run: rspec
-
-      # upload code coverage metrics
-      - run: bash <(curl -s https://codecov.io/bash)
