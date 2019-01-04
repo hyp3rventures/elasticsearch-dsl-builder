@@ -1,4 +1,5 @@
 require 'rspec'
+require 'pry'
 
 require 'simplecov'
 # save to CircleCI's artifacts directory if we're on CircleCI
