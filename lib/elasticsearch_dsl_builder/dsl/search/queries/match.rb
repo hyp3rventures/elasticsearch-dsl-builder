@@ -23,8 +23,30 @@ module ElasticsearchDslBuilder
             self
           end
 
+          def operator(operator)
+            raise ArgumentError, 'operator must be a String' unless operator.instance_of?(String)
+            @operator = operator
+            self
+          end
+
+          def boost(boost)
+            raise ArgumentError, 'boost must be a Integer' unless boost.instance_of?(Integer)
+            @boost = boost
+            self
+          end
+
+          def fuzziness(fuzziness)
+            raise ArgumentError, 'fuzziness must be a Integer' unless fuzziness.instance_of?(Integer)
+            @fuzziness = fuzziness
+            self
+          end
+
           def to_hash
-            @query = { @field => @value }
+            nested_query = { value: @value }
+            nested_query.update(operator: @operator) if @operator
+            nested_query.update(boost: @boost) if @boost
+            nested_query.update(fuzziness: @fuzziness) if @fuzziness
+            @query = { @field => nested_query }
             super
           end
         end
