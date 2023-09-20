@@ -2,11 +2,11 @@ module ElasticsearchDslBuilder
   module DSL
     module Search
       module Queries
-        class Term < Query
+        class Prefix < Query
           def initialize(field = nil, value = nil)
-            @type = :term
-            field(field) unless field.nil?
-            value(value) unless value.nil?
+            @type = :prefix
+            field(field)
+            value(value)
             super()
           end
 
@@ -21,14 +21,14 @@ module ElasticsearchDslBuilder
             @value = value
             self
           end
-
+          
           def boost(boost)
+            raise ArgumentError, 'boost must be a Integer' unless boost.instance_of?(Intger)
             @boost = boost
             self
           end
 
           def to_hash
-            raise InvalidQuery, 'field and value must be provided for Term Query' unless @field && @value
             nested_query = { value: @value }
             nested_query.update(boost: @boost) if @boost
             @query = { @field => nested_query }
